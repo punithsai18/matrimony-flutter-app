@@ -2,87 +2,25 @@
 // ignore_for_file: type=lint
 
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// 
-/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       return web;
     }
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return android;
-      case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
-        return macos;
-      case TargetPlatform.windows:
-        return windows;
-      case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
-      default:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions are not supported for this platform.',
-        );
-    }
+    throw UnsupportedError(
+      'DefaultFirebaseOptions are only configured for web in this project.',
+    );
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCJwhQTHER9XjMuBQjWxeONlIkI43LGXps',
-    appId: '1:749580264206:web:3f3124594cc0b17c1a2d5f',
-    messagingSenderId: '749580264206',
-    projectId: 'bright-weddings',
-    authDomain: 'bright-weddings.firebaseapp.com',
-    storageBucket: 'bright-weddings.appspot.com',
-    measurementId: 'G-EVKVL5QE2W',
+    apiKey: "AIzaSyCfcn_q14Wc-AnYPshuJWHtAEzP_Jxf3Bo",
+    authDomain: "bright-weddings-605e7.firebaseapp.com",
+    projectId: "bright-weddings-605e7",
+    storageBucket: "bright-weddings-605e7.firebasestorage.app",
+    messagingSenderId: "319657689155",
+    appId: "1:319657689155:web:5520ffe43786f325e0d4f6",
+    measurementId: "G-FEK846FS4T",
   );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDj5-MBFsRGdI5PCQ4O3xDlxJJV_vl9A8g',
-    appId: '1:319657689155:android:b8a2d3c724394552e0d4f6',
-    messagingSenderId: '319657689155',
-    projectId: 'bright-weddings-605e7',
-    storageBucket: 'bright-weddings-605e7.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB_sJfQVi2f3A4cjWxAFfhWwOyOz3wXpmo',
-    appId: '1:319657689155:ios:88c05a2978abfc92e0d4f6',
-    messagingSenderId: '319657689155',
-    projectId: 'bright-weddings-605e7',
-    storageBucket: 'bright-weddings-605e7.firebasestorage.app',
-    iosBundleId: 'com.example.brightWeddings',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCJwhQTHER9XjMuBQjWxeONlIkI43LGXps',
-    appId: '1:749580264206:web:959a8368d124cc4c1a2d5f',
-    messagingSenderId: '749580264206',
-    projectId: 'bright-weddings',
-    authDomain: 'bright-weddings.firebaseapp.com',
-    storageBucket: 'bright-weddings.appspot.com',
-    measurementId: 'G-C6ZNK96M80',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB_sJfQVi2f3A4cjWxAFfhWwOyOz3wXpmo',
-    appId: '1:319657689155:ios:88c05a2978abfc92e0d4f6',
-    messagingSenderId: '319657689155',
-    projectId: 'bright-weddings-605e7',
-    storageBucket: 'bright-weddings-605e7.firebasestorage.app',
-    iosBundleId: 'com.example.brightWeddings',
-  );
-
 }

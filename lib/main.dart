@@ -8,12 +8,18 @@ import 'package:bright_weddings/Controller/new_registration_controller.dart';
 import 'View/Dashboard/dashboard_mob.dart';
 import 'Helper/size_config.dart'; 
 import 'package:bright_weddings/View/Login/home.dart';
+import 'firebase_options.dart';
+import 'View/Login/login_mobile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(ScreenController());
   Get.put(NewRegistrationController());
-  await Firebase.initializeApp();
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
   runApp(MyApp());
 }
 
@@ -36,6 +42,7 @@ class MyApp extends StatelessWidget {
               routes: {
                 '/': (context) => LoginHome(),
                 '/home': (context) => DashboardMob(),
+                '/LoginMobile': (context) => LoginMobile(),
               },
               debugShowCheckedModeBanner: false,
               builder: EasyLoading.init(),

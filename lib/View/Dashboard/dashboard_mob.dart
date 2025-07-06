@@ -11,6 +11,8 @@ import '../../Component/Dashboard/New Profile/new_profile_tab.dart';
 import '../../Component/Dashboard/ProfileCompletionStatus/profile_completion_status.dart';
 import '../../Component/Dashboard/ProfileStatus/profile_status.dart';
 import '../../Mock API/user_list.dart';
+import 'package:bright_weddings/View/Discover/discover_page.dart';
+import 'package:bright_weddings/Component/Dashboard/Discover/discover_section.dart';
 
 class DashboardMob extends StatefulWidget {
   DashboardMob({super.key});
@@ -214,6 +216,17 @@ class _DashboardMobState extends State<DashboardMob> {
                 ],
               ),
               SizedBox(height: 5.0.h),
+
+              SizedBox(height: 2.0.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildSectionTitle('Discover Matches'),
+                  _viewAllButton(), // Optional: you can hook this to navigate to full screen
+                ],
+              ),
+              DiscoverSection(), // 👈 Here’s your embedded Discover cards
+
             ],
           ),
         ),
@@ -231,10 +244,10 @@ class _DashboardMobState extends State<DashboardMob> {
               Get.to(() => DashboardMob());
               break;
             case 1: // Matches
-              Get.to(() => ());
+              Get.to(() => DiscoverPage()); // 👈 Add this
               break;
-            case 2: // New Button
-              Get.to(() => ());
+            case 2: // Messages
+              Get.to(() => Placeholder()); // You can change this later
               break;
             case 3: // Profile
               Get.to(() => ProfileDetails());
@@ -261,6 +274,10 @@ class _DashboardMobState extends State<DashboardMob> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Discover',
           ),
         ],
       ),

@@ -8,6 +8,7 @@ import 'package:bright_weddings/Controller/new_registration_controller.dart';
 import 'View/Dashboard/dashboard_mob.dart';
 import 'Helper/size_config.dart'; 
 import 'package:bright_weddings/View/Login/home.dart';
+import 'package:bright_weddings/View/Discover/discover_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
               routes: {
                 '/': (context) => LoginHome(),
                 '/home': (context) => DashboardMob(),
+                '/discover': (context) => DiscoverPage(), // ✅ This is correct
               },
               debugShowCheckedModeBanner: false,
               builder: EasyLoading.init(),

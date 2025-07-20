@@ -4,20 +4,28 @@ import 'package:get/get.dart';
 import 'Controller/screen_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bright_weddings/Controller/new_registration_controller.dart';
-//import 'View/Profile/ProfileDetails/profile_details.dart';
+// import 'View/Profile/ProfileDetails/profile_details.dart';
 import 'View/Dashboard/dashboard_mob.dart';
-import 'Helper/size_config.dart'; 
-import 'package:bright_weddings/View/Login/home.dart';
+import 'Helper/size_config.dart';
+import 'View/Login/Login/home.dart';
+import 'discover_page';
 import 'package:bright_weddings/View/Discover/discover_page.dart';
+import 'firebase_options.dart';
+import 'View/Login/login_mobile.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(ScreenController());
   Get.put(NewRegistrationController());
-  await Firebase.initializeApp();
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -27,7 +35,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return OrientationBuilder(
           builder: (BuildContext context2, Orientation orientation) {
-            SizeConfig.init(constraints, orientation);  // Initialize SizeConfig
+            SizeConfig.init(constraints, orientation);  
             return GetMaterialApp(
               title: "Bright Weddings",
               theme: ThemeData(
@@ -37,7 +45,8 @@ class MyApp extends StatelessWidget {
               routes: {
                 '/': (context) => LoginHome(),
                 '/home': (context) => DashboardMob(),
-                '/discover': (context) => DiscoverPage(), // ✅ This is correct
+                '/discover': (context) => DiscoverPage(),
+                '/LoginMobile': (context) => LoginMobile(),
               },
               debugShowCheckedModeBanner: false,
               builder: EasyLoading.init(),
@@ -48,3 +57,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

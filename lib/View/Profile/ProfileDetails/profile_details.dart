@@ -59,13 +59,19 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               Get.off(() => DashboardMob()); // Use Get.off to remove the current page from the stack
               break;
             case 1: // Matches
-              Get.off(() => ()); // Replace with your Matches screen
+              // Temporary placeholder - can be implemented later
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Matches feature coming soon!")),
+              );
               break;
             case 2: // New Button
-              Get.off(() => ()); // Replace with your NewScreen
+              // Temporary placeholder - can be implemented later
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Feature coming soon!")),
+              );
               break;
             case 3: // Profile
-              Get.off(() => ProfileDetails()); // Navigates to ProfileDetails
+              // Already on profile page, no need to navigate
               break;
           }
         },

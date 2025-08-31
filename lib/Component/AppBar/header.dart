@@ -2,6 +2,7 @@ import 'package:bright_weddings/Component/Dashboard/Notifications/notifications.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onNext;
@@ -59,8 +60,34 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
               },
               icon: Icon(Icons.notifications),
               color: Color.fromARGB(255, 134, 133, 133), 
-              
+            ),
             
+            // Logout Button
+            IconButton(
+              onPressed: () async {
+                try {
+                  await FirebaseAuth.instance.signOut();
+                  Get.offAllNamed('/');
+                  Get.snackbar(
+                    'Logged Out',
+                    'You have been successfully logged out',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+                } catch (e) {
+                  Get.snackbar(
+                    'Error',
+                    'Failed to logout: $e',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                }
+              },
+              icon: Icon(Icons.logout),
+              color: Color.fromARGB(255, 134, 133, 133),
+              tooltip: 'Logout',
             ),
 
           ],

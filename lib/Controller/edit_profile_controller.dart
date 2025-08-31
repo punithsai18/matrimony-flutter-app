@@ -22,9 +22,6 @@ class EditProfileController extends GetxController {
   final TextEditingController educationController = TextEditingController();
   final TextEditingController demandController = TextEditingController();
 
-  EditProfileController editProfileController =
-      Get.find<EditProfileController>();
-
   final ImagePicker _picker = ImagePicker();
 
   var currentFormIndex = 0.obs;

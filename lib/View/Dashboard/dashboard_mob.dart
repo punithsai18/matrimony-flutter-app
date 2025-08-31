@@ -241,16 +241,21 @@ class _DashboardMobState extends State<DashboardMob> {
           // Use Get.to() for navigation
           switch (index) {
             case 0: // Home
-              Get.to(() => DashboardMob());
+              // Already on home, no need to navigate
               break;
             case 1: // Matches
               Get.to(() => DiscoverPage()); // 👈 Add this
               break;
             case 2: // Messages
-              Get.to(() => Placeholder()); // You can change this later
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Messages feature coming soon!")),
+              );
               break;
             case 3: // Profile
               Get.to(() => ProfileDetails());
+              break;
+            case 4: // Discover
+              Get.to(() => DiscoverPage());
               break;
           }
         },
@@ -258,6 +263,7 @@ class _DashboardMobState extends State<DashboardMob> {
             Colors.redAccent, // Set the color for the selected item
         unselectedItemColor:
             Colors.grey, // Set the color for the unselected items
+        type: BottomNavigationBarType.fixed, // This allows more than 3 items
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

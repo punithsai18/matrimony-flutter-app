@@ -9,9 +9,9 @@ import 'package:get/get.dart';
 import '../Controller/profile_controller.dart';
 
 Future<void> init() async{
-  Get.lazyPut(()=>AuthController(), fenix: true);
-  Get.lazyPut(()=>NewRegistrationController(), fenix: true);
-  Get.lazyPut(()=>ScreenController(), fenix: true);
-  Get.lazyPut(()=>ProfileController(), fenix: true);
-  Get.lazyPut(()=>EditProfileController(), fenix: true);
+  // Get.lazyPut(()=>AuthController(), fenix: true);
+  // Get.lazyPut(()=>NewRegistrationController(), fenix: true);
+  // Get.lazyPut(()=>ScreenController(), fenix: true);
+  // Get.lazyPut(()=>ProfileController(), fenix: true);
+  // Get.lazyPut(()=>EditProfileController(), fenix: true);
 }

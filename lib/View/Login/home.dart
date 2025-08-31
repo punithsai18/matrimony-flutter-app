@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-import 'package:bright_weddings/View/Login/login_mobile.dart';
-import 'package:bright_weddings/View/New%20Client%20Registration/new_client_registration.dart';
+import 'package:bright_weddings/View/Login/login_original_firebase.dart';
 
 class LoginHome extends StatelessWidget {
   const LoginHome({super.key});
@@ -58,7 +57,7 @@ class LoginHome extends StatelessWidget {
                   label: "Login",
                   colorStart: Color(0xFFF57C00),
                   colorEnd: Color(0xFFE65100),
-                  onPressed: () => Get.to(() => LoginMobile()),
+                  onPressed: () => Get.to(() => LoginOriginalFirebase(startWithRegister: false)),
                 ),
                 SizedBox(height: 20),
                 _buildActionButton(
@@ -66,8 +65,7 @@ class LoginHome extends StatelessWidget {
                   label: "Register",
                   colorStart: Color(0xFFEF5350),
                   colorEnd: Color(0xFFD32F2F),
-                  onPressed: () => Get.to(() => NewClientRegistration()),
-                  //onPressed: () => Get.to(() => NewClientRegistration()),
+                  onPressed: () => Get.to(() => LoginOriginalFirebase(startWithRegister: true)),
                 ),
               ],
             ),

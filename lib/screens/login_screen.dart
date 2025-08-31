@@ -9,42 +9,52 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Controllers to manage the text in the TextFields
+  // A GlobalKey to uniquely identify and manage the Form state.
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers to manage the text in the TextFields.
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
 
-  // State variable to hold the verification ID from Firebase
+  // State variable to hold the verification ID from Firebase.
   String verificationId = "";
 
   // --- Logic Methods ---
 
-  // Method to request OTP from the authentication service
+  // Method to request OTP from the authentication service.
   void requestOTP() {
-    // We would add validation here in the next step
-    AuthService().signInWithPhone(phoneController.text, (String verId) {
-      setState(() {
-        verificationId = verId;
+    // First, check if the form fields are valid.
+    if (_formKey.currentState!.validate()) {
+      // If validation passes, then call the AuthService.
+      AuthService().signInWithPhone(phoneController.text, (String verId) {
+        setState(() {
+          verificationId = verId;
+        });
+        // Show a confirmation message to the user.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('OTP has been sent!')),
+        );
       });
-      // Optionally, show a success message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('OTP has been sent!')),
-      );
-    });
+    }
   }
 
-  // Method to verify the entered OTP
+  // Method to verify the entered OTP.
   void verifyOTP() async {
-    try {
-      await AuthService().verifyOTP(verificationId, otpController.text);
-      print("Login Successful!");
-      // TODO: Navigate to the home screen upon successful login
-      // Navigator.pushReplacementNamed(context, '/home');
-    } catch (e) {
-      print("Error verifying OTP: $e");
-      // Optionally, show an error message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: Invalid OTP')),
-      );
+    // First, check if the form fields are valid.
+    if (_formKey.currentState!.validate()) {
+      // If validation passes, then attempt to verify the OTP.
+      try {
+        await AuthService().verifyOTP(verificationId, otpController.text);
+        print("Login Successful!");
+        // TODO: Navigate to the home screen upon successful login.
+        // For example: Navigator.pushReplacementNamed(context, '/home');
+      } catch (e) {
+        print("Error verifying OTP: $e");
+        // Show an error message to the user.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: Invalid OTP')),
+        );
+      }
     }
   }
 
@@ -55,58 +65,76 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
-        // Use a color from our constants file
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Padding(
-        // Use a padding size from our constants file
-        padding: EdgeInsets.all(AppSizes.screenPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch, // Makes buttons stretch
-          children: [
-            TextField(
-              controller: phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: "Enter Phone Number",
-                border: OutlineInputBorder(),
+      // Use a Form widget to enable validation for its children.
+      body: Form(
+        key: _formKey, // Assign the key to the form.
+        child: Padding(
+          padding: EdgeInsets.all(AppSizes.screenPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Use TextFormField instead of TextField for validation.
+              TextFormField(
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  labelText: "Enter Phone Number",
+                  border: OutlineInputBorder(),
+                ),
+                // Validator for the phone number field.
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  } else if (value.length < 10) {
+                    return 'Please enter a valid 10-digit number';
+                  }
+                  return null; // Return null if the input is valid.
+                },
               ),
-            ),
-            // Use a spacing size from our constants file
-            SizedBox(height: AppSizes.screenPadding),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                // Use a color from our constants file
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: Colors.white, // Set the text/icon color to white
-                padding: EdgeInsets.symmetric(vertical: AppSizes.medium),
+              SizedBox(height: AppSizes.screenPadding),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: AppSizes.medium),
+                ),
+                onPressed: requestOTP,
+                child: Text("Request OTP"),
               ),
-              onPressed: requestOTP,
-              child: Text("Request OTP"),
-            ),
-            SizedBox(height: AppSizes.screenPadding),
-            TextField(
-              controller: otpController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Enter OTP",
-                border: OutlineInputBorder(),
+              SizedBox(height: AppSizes.screenPadding),
+              // Use TextFormField for the OTP field as well.
+              TextFormField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Enter OTP",
+                  border: OutlineInputBorder(),
+                ),
+                // Validator for the OTP field.
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the OTP';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: AppSizes.screenPadding),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                // Use a different color for variety
-                backgroundColor: AppColors.accentColor,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: AppSizes.medium),
+              SizedBox(height: AppSizes.screenPadding),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accentColor,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: AppSizes.medium),
+                ),
+                onPressed: verifyOTP,
+                child: Text("Verify OTP"),
               ),
-              onPressed: verifyOTP,
-              child: Text("Verify OTP"),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
+

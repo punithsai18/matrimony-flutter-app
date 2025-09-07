@@ -29,7 +29,7 @@ class LoginHome extends StatelessWidget {
               children: [
                 Center(
                   child: Image.asset(
-                    'assets/images/vector_wedding.png',
+                    'assets/images/bv-mobile-banner.jpg',
                     height: 250,
                   ),
                 ),
@@ -57,7 +57,8 @@ class LoginHome extends StatelessWidget {
                   label: "Login",
                   colorStart: Color(0xFFF57C00),
                   colorEnd: Color(0xFFE65100),
-                  onPressed: () => Get.to(() => LoginOriginalFirebase(startWithRegister: false)),
+                  onPressed: () => Get.to(
+                      () => LoginOriginalFirebase(startWithRegister: false)),
                 ),
                 SizedBox(height: 20),
                 _buildActionButton(
@@ -65,7 +66,8 @@ class LoginHome extends StatelessWidget {
                   label: "Register",
                   colorStart: Color(0xFFEF5350),
                   colorEnd: Color(0xFFD32F2F),
-                  onPressed: () => Get.to(() => LoginOriginalFirebase(startWithRegister: true)),
+                  onPressed: () => Get.to(
+                      () => LoginOriginalFirebase(startWithRegister: true)),
                 ),
               ],
             ),

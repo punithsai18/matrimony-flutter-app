@@ -46,9 +46,8 @@ class _DashboardMobState extends State<DashboardMob> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(80), 
-        child: Header(), 
+        preferredSize: Size.fromHeight(80),
+        child: Header(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -74,7 +73,6 @@ class _DashboardMobState extends State<DashboardMob> {
               ),
               SizedBox(height: 16),
               TextField(
-                
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Search for partner',
@@ -96,8 +94,7 @@ class _DashboardMobState extends State<DashboardMob> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildSectionTitle(
-                      'Near You'), 
+                  _buildSectionTitle('Near You'),
                   _viewAllButton(),
                 ],
               ),
@@ -117,7 +114,7 @@ class _DashboardMobState extends State<DashboardMob> {
                         topRight: Radius.circular(16),
                       ),
                       child: Image.asset(
-                        'assets/images/download.jpg', 
+                        'assets/images/download.jpg',
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -226,7 +223,6 @@ class _DashboardMobState extends State<DashboardMob> {
                 ],
               ),
               DiscoverSection(), // 👈 Here’s your embedded Discover cards
-
             ],
           ),
         ),

@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Form(
         key: _formKey, // Assign the key to the form.
         child: Padding(
-          padding: EdgeInsets.all(AppSizes.screenPadding),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null; // Return null if the input is valid.
                 },
               ),
-              SizedBox(height: AppSizes.screenPadding),
+              SizedBox(height: 16.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
@@ -138,3 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+class AppSizes {
+  static const double medium = 16.0;
+  static const double screenPadding = 16.0;
+}

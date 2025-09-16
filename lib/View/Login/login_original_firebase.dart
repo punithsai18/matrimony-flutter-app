@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../Dashboard/dashboard_mob.dart';
 import '../../Controller/firebase_auth_controller.dart';
 
 class LoginOriginalFirebase extends StatefulWidget {
   final bool startWithRegister;
-  
-  const LoginOriginalFirebase({Key? key, this.startWithRegister = false}) : super(key: key);
+
+  const LoginOriginalFirebase({Key? key, this.startWithRegister = false})
+      : super(key: key);
 
   @override
   State<LoginOriginalFirebase> createState() => _LoginOriginalFirebaseState();
@@ -21,9 +23,10 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
   String _errorMessage = '';
   late bool _isRegistering;
   bool _obscurePassword = true;
-  
+
   // Get the Firebase Auth Controller
-  final FirebaseAuthController authController = Get.put(FirebaseAuthController());
+  final FirebaseAuthController authController =
+      Get.put(FirebaseAuthController());
 
   // Firebase Web API Key
   final String _apiKey = "AIzaSyCfcn_q14Wc-AnYPshuJWHtAEzP_Jxf3Bo";
@@ -50,9 +53,11 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
     try {
       String url;
       if (_isRegistering) {
-        url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_apiKey';
+        url =
+            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_apiKey';
       } else {
-        url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_apiKey';
+        url =
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_apiKey';
       }
 
       final response = await http.post(
@@ -71,30 +76,31 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
         final idToken = responseData['idToken'];
         final email = responseData['email'];
         final localId = responseData['localId'];
-        
+
         setState(() {
-          _errorMessage = _isRegistering 
+          _errorMessage = _isRegistering
               ? "Welcome to Bright Weddings! Account created successfully."
               : "Welcome back! Login successful.";
         });
 
         await Future.delayed(Duration(seconds: 2));
-        
+
         authController.login(email, idToken, localId);
         Get.offAll(() => DashboardMob());
-        
       } else {
         String errorMessage = 'Authentication failed';
-        
+
         if (responseData['error'] != null) {
           final errorCode = responseData['error']['message'];
-          
+
           switch (errorCode) {
             case 'EMAIL_EXISTS':
-              errorMessage = 'This email is already registered. Please sign in instead.';
+              errorMessage =
+                  'This email is already registered. Please sign in instead.';
               break;
             case 'EMAIL_NOT_FOUND':
-              errorMessage = 'No user found with this email. Please register first.';
+              errorMessage =
+                  'No user found with this email. Please register first.';
               break;
             case 'INVALID_PASSWORD':
               errorMessage = 'Incorrect password. Please try again.';
@@ -115,7 +121,7 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
               errorMessage = 'Authentication failed: $errorCode';
           }
         }
-        
+
         setState(() {
           _errorMessage = errorMessage;
           _isLoading = false;
@@ -123,7 +129,8 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Network error. Please check your connection and try again.';
+        _errorMessage =
+            'Network error. Please check your connection and try again.';
         _isLoading = false;
       });
     }
@@ -165,7 +172,7 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: 60),
-                    
+
                     // Logo/Icon
                     Container(
                       padding: EdgeInsets.all(20),
@@ -186,9 +193,9 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                         color: Color(0xFF8B4513),
                       ),
                     ),
-                    
+
                     SizedBox(height: 30),
-                    
+
                     // App Title
                     Text(
                       'Bright Weddings',
@@ -206,9 +213,9 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                         ],
                       ),
                     ),
-                    
+
                     SizedBox(height: 10),
-                    
+
                     Text(
                       'Find your perfect match',
                       style: TextStyle(
@@ -220,7 +227,7 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                   ],
                 ),
               ),
-              
+
               // Login Form Section
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
@@ -249,12 +256,12 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     SizedBox(height: 8),
-                    
+
                     Text(
-                      _isRegistering 
-                          ? 'Join thousands of happy couples' 
+                      _isRegistering
+                          ? 'Join thousands of happy couples'
                           : 'Sign in to continue your journey',
                       style: TextStyle(
                         fontSize: 14,
@@ -262,9 +269,9 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     SizedBox(height: 30),
-                    
+
                     // Email Field
                     Container(
                       decoration: BoxDecoration(
@@ -276,17 +283,19 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                         controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'Email Address',
-                          prefixIcon: Icon(Icons.email_outlined, color: Color(0xFFF3D48A)),
+                          prefixIcon: Icon(Icons.email_outlined,
+                              color: Color(0xFFF3D48A)),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
                           labelStyle: TextStyle(color: Colors.grey[600]),
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
                     ),
-                    
+
                     SizedBox(height: 20),
-                    
+
                     // Password Field
                     Container(
                       decoration: BoxDecoration(
@@ -299,10 +308,13 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock_outline, color: Color(0xFFF3D48A)),
+                          prefixIcon: Icon(Icons.lock_outline,
+                              color: Color(0xFFF3D48A)),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.grey[600],
                             ),
                             onPressed: () {
@@ -312,26 +324,29 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                             },
                           ),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
                           labelStyle: TextStyle(color: Colors.grey[600]),
                         ),
                       ),
                     ),
-                    
+
                     SizedBox(height: 20),
-                    
+
                     // Error/Success Message
                     if (_errorMessage.isNotEmpty)
                       Container(
                         padding: EdgeInsets.all(12),
                         margin: EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
-                          color: _errorMessage.contains('successful') || _errorMessage.contains('Welcome')
+                          color: _errorMessage.contains('successful') ||
+                                  _errorMessage.contains('Welcome')
                               ? Colors.green[50]
                               : Colors.red[50],
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: _errorMessage.contains('successful') || _errorMessage.contains('Welcome')
+                            color: _errorMessage.contains('successful') ||
+                                    _errorMessage.contains('Welcome')
                                 ? Colors.green[200]!
                                 : Colors.red[200]!,
                           ),
@@ -339,7 +354,8 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                         child: Text(
                           _errorMessage,
                           style: TextStyle(
-                            color: _errorMessage.contains('successful') || _errorMessage.contains('Welcome')
+                            color: _errorMessage.contains('successful') ||
+                                    _errorMessage.contains('Welcome')
                                 ? Colors.green[800]
                                 : Colors.red[800],
                             fontSize: 13,
@@ -347,12 +363,13 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                    
+
                     // Login/Register Button
                     Container(
                       height: 55,
                       child: ElevatedButton(
-                        onPressed: _isLoading ? null : _authenticateWithFirebase,
+                        onPressed:
+                            _isLoading ? null : _authenticateWithFirebase,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFFF3D48A),
                           foregroundColor: Colors.white,
@@ -381,16 +398,16 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                               ),
                       ),
                     ),
-                    
+
                     SizedBox(height: 20),
-                    
+
                     // Toggle between login and register
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          _isRegistering 
-                              ? 'Already have an account? ' 
+                          _isRegistering
+                              ? 'Already have an account? '
                               : "Don't have an account? ",
                           style: TextStyle(color: Colors.grey[600]),
                         ),
@@ -411,15 +428,27 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                         ),
                       ],
                     ),
-                    
+
                     // Forgot Password (for login only)
                     if (!_isRegistering) ...[
                       SizedBox(height: 10),
                       TextButton(
-                        onPressed: () {
-                          // TODO: Implement forgot password
+                        onPressed: () async {
+                          try {
+                            await FirebaseAuth.instance.sendPasswordResetEmail(
+                              email: _emailController.text,
+                            );
+                          } catch (e) {
+                            setState(() {
+                              _errorMessage = 'Error: ${e.toString()}';
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: ${e.toString()}")),
+                            );
+                          }
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Forgot password feature coming soon!')),
+                            SnackBar(
+                                content: Text("Password reset email sent")),
                           );
                         },
                         child: Text(
@@ -434,9 +463,9 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 30),
-              
+
               // Footer
               Text(
                 '© 2025 Bright Weddings. All rights reserved.',
@@ -445,7 +474,7 @@ class _LoginOriginalFirebaseState extends State<LoginOriginalFirebase> {
                   fontSize: 12,
                 ),
               ),
-              
+
               SizedBox(height: 30),
             ],
           ),

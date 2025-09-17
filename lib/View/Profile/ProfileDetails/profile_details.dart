@@ -1,3 +1,4 @@
+import 'package:bright_weddings/View/Dashboard/chat.dart';
 import 'package:bright_weddings/View/Dashboard/dashboard_mob.dart';
 
 import 'package:bright_weddings/View/Login/home.dart';
@@ -138,7 +139,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               Get.off(() = ()); // Replace with your Matches screen
               break;
             case 2: // New Button
-              Get.off(() => ()); // Replace with your NewScreen
+              Get.off(() => Chat()); // Replace with your NewScreen
               break;
             case 3: // Profile
               Get.off(() => ProfileDetails()); // Navigates to ProfileDetails

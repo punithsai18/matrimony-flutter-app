@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:bright_weddings/View/Dashboard/chat.dart';
 import 'package:bright_weddings/View/Dashboard/dashboard_mob.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart'; // Ensure GetX is imported for navigation
+
 import 'package:bright_weddings/View/Login/home.dart';
-import 'package:bright_weddings/Component/EditProfileComponent/edit_profile_form.dart';
- // Adjust if the file location changes
- // Import the EditProfileForm
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+// Import the EditProfileForm
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({super.key});
@@ -21,31 +22,106 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: GoogleFonts.kodchasan(
-            height: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: const Text("Profile"),
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Profile Header Section
-            _buildProfileHeader(),
+            // Profile avatar with edit button
+            Stack(
+              children: [
+                const CircleAvatar(
+                  radius: 60,
+                  backgroundImage: AssetImage(
+                    'assets/images/loginCouple.png',
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 4,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.blueAccent,
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
 
-            // Profile Information Section
-            _buildProfileInfo(context),
+            const Text(
+              "Kisuke",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              "kisuke@gmail.com",
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+            const SizedBox(height: 20),
 
-            // Action Buttons
-            _buildActionButtons(context),
+            // Contact Info
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.phone, color: Colors.blueAccent),
+                title: const Text("9876543210"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(
+                  Icons.location_on,
+                  color: Colors.blueAccent,
+                ),
+                title: const Text("Bangalore, India"),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Stats
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildStatCard("Connected", "07"),
+                _buildStatCard("Likes", "18"),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            // Settings + Logout
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.settings, color: Colors.blueAccent),
+                title: const Text("Settings"),
+                onTap: () {},
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text("Logout"),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginHome(),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
-      backgroundColor: Colors.grey[100],
-
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex, // Track the selected index
         onTap: (index) {
@@ -56,27 +132,24 @@ class _ProfileDetailsState extends State<ProfileDetails> {
           // Use Get.to() for navigation
           switch (index) {
             case 0: // Home
-              Get.off(() => DashboardMob()); // Use Get.off to remove the current page from the stack
+              Get.off(() =>
+                  DashboardMob()); // Use Get.off to remove the current page from the stack
               break;
             case 1: // Matches
-              // Temporary placeholder - can be implemented later
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Matches feature coming soon!")),
-              );
+              Get.off(() = ()); // Replace with your Matches screen
               break;
             case 2: // New Button
-              // Temporary placeholder - can be implemented later
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Feature coming soon!")),
-              );
+              Get.off(() => Chat()); // Replace with your NewScreen
               break;
             case 3: // Profile
-              // Already on profile page, no need to navigate
+              Get.off(() => ProfileDetails()); // Navigates to ProfileDetails
               break;
           }
         },
-        selectedItemColor: Colors.redAccent, // Set the color for the selected item
-        unselectedItemColor: Colors.grey, // Set the color for the unselected items
+        selectedItemColor:
+            Colors.redAccent, // Set the color for the selected item
+        unselectedItemColor:
+            Colors.grey, // Set the color for the unselected items
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -99,135 +172,22 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     );
   }
 
-  Widget _buildProfileHeader() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.pinkAccent, Colors.deepOrangeAccent],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+  Widget _buildStatCard(String title, String value) {
+    return Card(
+      elevation: 2,
+      child: Container(
+        width: 140,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Text(title, style: const TextStyle(color: Colors.grey)),
+          ],
         ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage('assets/images/loginCouple.png'),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "John Doe", // Replace with dynamic name
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            "johndoe@example.com", // Replace with dynamic email
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white70,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileInfo(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              _buildInfoRow("Name", "John Doe"),
-              const Divider(),
-              _buildInfoRow("Email", "johndoe@example.com"),
-              const Divider(),
-              _buildInfoRow("Phone", "+1234567890"),
-              const Divider(),
-              _buildInfoRow("Address", "123, Wedding Street, Bliss City"),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        Text(
-          value,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionButtons(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        children: [
-          // Edit Profile Button
-          ElevatedButton.icon(
-            onPressed: () {
-              // Navigate to the EditProfileForm screen
-              Get.to(() => EditProfileForm()); // Assuming EditProfileForm is a separate widget
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              backgroundColor: Colors.deepPurpleAccent,
-            ),
-            icon: const Icon(Icons.edit, color: Colors.white),
-            label: const Text(
-              "Edit Profile",
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          ),
-          const SizedBox(height: 15),
-
-          // Logout Button
-          ElevatedButton.icon(
-            onPressed: () {
-              // Handle Logout
-              Get.to(() => LoginHome());
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              backgroundColor: Colors.redAccent,
-            ),
-            icon: const Icon(Icons.logout, color: Colors.white),
-            label: const Text(
-              "Logout",
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          ),
-        ],
       ),
     );
   }

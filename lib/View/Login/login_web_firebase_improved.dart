@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Dashboard/dashboard_mob.dart';
 import 'login_fallback.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginWebFirebaseImproved extends StatefulWidget {
   const LoginWebFirebaseImproved({Key? key}) : super(key: key);
 
   @override
-  State<LoginWebFirebaseImproved> createState() => _LoginWebFirebaseImprovedState();
+  State<LoginWebFirebaseImproved> createState() =>
+      _LoginWebFirebaseImprovedState();
 }
 
 class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
@@ -31,10 +33,9 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
     });
 
     try {
-      // Import Firebase Auth dynamically to avoid minification issues
-      final firebaseAuthModule = await import('package:firebase_auth/firebase_auth.dart');
-      final auth = firebaseAuthModule.FirebaseAuth.instance;
-      
+      // Use FirebaseAuth instance directly
+      final auth = FirebaseAuth.instance;
+
       if (_isRegistering) {
         // Register new user
         await auth.createUserWithEmailAndPassword(
@@ -48,23 +49,26 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
           password: _passwordController.text,
         );
       }
-      
+
       // If successful, navigate to dashboard
       Get.offAll(() => DashboardMob());
     } catch (e) {
       print("Firebase authentication error: $e");
       setState(() {
         String errorMessage = e.toString();
-        
+
         // Provide user-friendly error messages
         if (errorMessage.contains('user-not-found')) {
-          errorMessage = 'No user found with this email. Please register first.';
+          errorMessage =
+              'No user found with this email. Please register first.';
         } else if (errorMessage.contains('wrong-password')) {
           errorMessage = 'Incorrect password. Please try again.';
         } else if (errorMessage.contains('email-already-in-use')) {
-          errorMessage = 'This email is already registered. Please sign in instead.';
+          errorMessage =
+              'This email is already registered. Please sign in instead.';
         } else if (errorMessage.contains('weak-password')) {
-          errorMessage = 'Password is too weak. Please use at least 6 characters.';
+          errorMessage =
+              'Password is too weak. Please use at least 6 characters.';
         } else if (errorMessage.contains('invalid-email')) {
           errorMessage = 'Please enter a valid email address.';
         } else if (errorMessage.contains('network-request-failed')) {
@@ -74,7 +78,7 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
         } else {
           errorMessage = 'Authentication failed. Please try demo mode instead.';
         }
-        
+
         _errorMessage = errorMessage;
         _isLoading = false;
       });
@@ -133,7 +137,7 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  
+
                   // Firebase info
                   Container(
                     padding: EdgeInsets.all(10),
@@ -150,9 +154,9 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  
+
                   SizedBox(height: 20),
-                  
+
                   // Email Field
                   TextField(
                     controller: _emailController,
@@ -166,7 +170,7 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   SizedBox(height: 15),
-                  
+
                   // Password Field
                   TextField(
                     controller: _passwordController,
@@ -180,7 +184,7 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                     obscureText: true,
                   ),
                   SizedBox(height: 20),
-                  
+
                   // Error Message
                   if (_errorMessage.isNotEmpty)
                     Container(
@@ -198,7 +202,7 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                         ),
                       ),
                     ),
-                  
+
                   // Loading or Auth Button
                   if (_isLoading)
                     CircularProgressIndicator(
@@ -226,9 +230,9 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                         ),
                       ),
                     ),
-                  
+
                   SizedBox(height: 20),
-                  
+
                   // Toggle between login and register
                   TextButton(
                     onPressed: () {
@@ -238,7 +242,7 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                       });
                     },
                     child: Text(
-                      _isRegistering 
+                      _isRegistering
                           ? 'Already have an account? Sign In'
                           : 'Need an account? Register',
                       style: TextStyle(
@@ -247,9 +251,9 @@ class _LoginWebFirebaseImprovedState extends State<LoginWebFirebaseImproved> {
                       ),
                     ),
                   ),
-                  
+
                   SizedBox(height: 20),
-                  
+
                   // Back to demo mode
                   TextButton(
                     onPressed: () {

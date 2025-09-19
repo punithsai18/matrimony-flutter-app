@@ -1,5 +1,6 @@
 import 'package:bright_weddings/Component/AppBar/header.dart';
 import 'package:bright_weddings/Component/Dashboard/Recent_Success/recent_success.dart';
+import 'package:bright_weddings/View/Dashboard/chat.dart';
 import 'package:bright_weddings/View/Profile/ProfileDetails/profile_details.dart';
 import 'package:bright_weddings/Component/Dashboard/profile_list/profile_list_tab.dart';
 import 'package:bright_weddings/Controller/screen_controller.dart';
@@ -251,9 +252,7 @@ class _DashboardMobState extends State<DashboardMob> {
               Get.to(() => DiscoverPage()); // 👈 Add this
               break;
             case 2: // Messages
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Messages feature coming soon!")),
-              );
+              Get.to(() => Chat());
               break;
             case 3: // Profile
               Get.to(() => ProfileDetails());
